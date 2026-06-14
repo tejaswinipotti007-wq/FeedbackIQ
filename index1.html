@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Project Registration</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Modern vibrant mesh gradient background */
+            background: radial-gradient(at 0% 0%, #4f46e5 0px, transparent 50%),
+                        radial-gradient(at 50% 0%, #ec4899 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, #3b82f6 0px, transparent 50%),
+                        #1e1b4b;
+            background-attachment: fixed;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        h2 {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: #cbd5e1;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            color: #f1f5f9;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        input:focus, select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+        }
+
+        select option {
+            background: #1e1b4b; /* Colors options text background for dark mode appearance */
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #38bdf8 0%, #4f46e5 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            color: #38bdf8;
+            font-weight: 500;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+    <h2>Project Showcase</h2>
+    <p class="subtitle">Register your team and project details for the event</p>
+    
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="teamName">Team Name</label>
+            <input type="text" id="teamName" placeholder="e.g. Alpha Creators" required>
+        </div>
+
+        <div class="form-group">
+            <label for="projectName">Project / Art / Stall Name</label>
+            <input type="text" id="projectName" placeholder="e.g. EcoSmart Trash Can" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Subject / Category</label>
+            <select id="category" required>
+                <option value="" disabled selected>Select category...</option>
+                <option value="Technology & IoT">Technology & IoT</option>
+                <option value="Art & Design">Art & Design</option>
+                <option value="Science & Innovation">Science & Innovation</option>
+                <option value="Social Impact">Social Impact</option>
+                <option value="Commercial Stall">Commercial Stall</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Contact Email ID</label>
+            <input type="email" id="email" placeholder="leader@example.com" required>
+        </div>
+
+        <button type="submit" id="regBtn">Register Project</button>
+        <div id="loaderText" class="loader">Submitting your concept to the judges...</div>
+    </form>
+</div>
+
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxxNUtYrh2BZrxW9DJXQzzU_qjXlh7Nt1qk3yW_03ErpraPL--KqD44uJMIteXwx02G/exec";
+
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('regBtn');
+        const loader = document.getElementById('loaderText');
+        
+        btn.disabled = true;
+        loader.style.display = 'block';
+
+        const payload = {
+            action: 'addTeam',
+            teamName: document.getElementById('teamName').value,
+            projectName: document.getElementById('projectName').value,
+            category: document.getElementById('category').value,
+            email: document.getElementById('email').value
+        };
+
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'success') {
+                alert('Success! Your project is locked in. Judges can now see your team.');
+                document.getElementById('registrationForm').reset();
+            } else {
+                alert('Registration failed: ' + response.message);
+            }
+        })
+        .catch(err => {
+            alert('Network Error. Please verify connection.');
+            console.error(err);
+        })
+        .finally(() => {
+            btn.disabled = false;
+            loader.style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>

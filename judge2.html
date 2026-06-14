@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judge Evaluation Panel</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(at 0% 0%, #4f46e5 0px, transparent 50%),
+                        radial-gradient(at 50% 0%, #ec4899 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, #3b82f6 0px, transparent 50%),
+                        #1e1b4b;
+            background-attachment: fixed;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            color: #f1f5f9;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+        }
+
+        select option {
+            background: #1e1b4b;
+            color: #fff;
+        }
+
+        .criterion-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .rating-title {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .stars input { display: none; }
+        
+        .stars label {
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            padding: 0 4px;
+            transition: color 0.2s ease, transform 0.1s ease;
+        }
+
+        .stars label:hover,
+        .stars label:hover ~ label,
+        .stars input:checked ~ label {
+            color: #f59e0b;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .stars label:active {
+            transform: scale(1.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+
+        button:disabled {
+            background: #475569;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            color: #ec4899;
+            font-weight: 500;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+    <h2>Judge Portal</h2>
+    <p class="subtitle">Secure Live Project Evaluation Panel</p>
+    
+    <form id="evaluationForm">
+        <div class="form-group">
+            <label for="judgeName">Judge Name</label>
+            <input type="text" id="judgeName" placeholder="Enter your official name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="teamSelect">Select Target Project</label>
+            <select id="teamSelect" required>
+                <option value="">Syncing team rosters...</option>
+            </select>
+        </div>
+
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;"></div>
+
+        <div class="criterion-card">
+            <div class="rating-title">1. Innovation & Creativity</div>
+            <div class="stars">
+                <input type="radio" id="q1-5" name="q1" value="5" required><label for="q1-5">★</label>
+                <input type="radio" id="q1-4" name="q1" value="4"><label for="q1-4">★</label>
+                <input type="radio" id="q1-3" name="q1" value="3"><label for="q1-3">★</label>
+                <input type="radio" id="q1-2" name="q1" value="2"><label for="q1-2">★</label>
+                <input type="radio" id="q1-1" name="q1" value="1"><label for="q1-1">★</label>
+            </div>
+        </div>
+
+        <div class="criterion-card">
+            <div class="rating-title">2. Execution & Quality</div>
+            <div class="stars">
+                <input type="radio" id="q2-5" name="q2" value="5" required><label for="q2-5">★</label>
+                <input type="radio" id="q2-4" name="q2" value="4"><label for="q2-4">★</label>
+                <input type="radio" id="q2-3" name="q2" value="3"><label for="q2-3">★</label>
+                <input type="radio" id="q2-2" name="q2" value="2"><label for="q2-2">★</label>
+                <input type="radio" id="q2-1" name="q2" value="1"><label for="q2-1">★</label>
+            </div>
+        </div>
+
+        <div class="criterion-card">
+            <div class="rating-title">3. Impact & Value (Effectiveness)</div>
+            <div class="stars">
+                <input type="radio" id="q3-5" name="q3" value="5" required><label for="q3-5">★</label>
+                <input type="radio" id="q3-4" name="q3" value="4"><label for="q3-4">★</label>
+                <input type="radio" id="q3-3" name="q3" value="3"><label for="q3-3">★</label>
+                <input type="radio" id="q3-2" name="q3" value="2"><label for="q3-2">★</label>
+                <input type="radio" id="q3-1" name="q3" value="1"><label for="q3-1">★</label>
+            </div>
+        </div>
+
+        <div class="criterion-card">
+            <div class="rating-title">4. Presentation</div>
+            <div class="stars">
+                <input type="radio" id="q4-5" name="q4" value="5" required><label for="q4-5">★</label>
+                <input type="radio" id="q4-4" name="q4" value="4"><label for="q4-4">★</label>
+                <input type="radio" id="q4-3" name="q4" value="3"><label for="q4-3">★</label>
+                <input type="radio" id="q4-2" name="q4" value="2"><label for="q4-2">★</label>
+                <input type="radio" id="q4-1" name="q4" value="1"><label for="q4-1">★</label>
+            </div>
+        </div>
+
+        <div class="criterion-card">
+            <div class="rating-title">5. Overall Appeal</div>
+            <div class="stars">
+                <input type="radio" id="q5-5" name="q5" value="5" required><label for="q5-5">★</label>
+                <input type="radio" id="q5-4" name="q5" value="4"><label for="q5-4">★</label>
+                <input type="radio" id="q5-3" name="q5" value="3"><label for="q5-3">★</label>
+                <input type="radio" id="q5-2" name="q5" value="2"><label for="q5-2">★</label>
+                <input type="radio" id="q5-1" name="q5" value="1"><label for="q5-1">★</label>
+            </div>
+        </div>
+
+        <button type="submit" id="submitBtn">Publish Evaluation</button>
+        <div id="loaderText" class="loader">Processing analytics data safely...</div>
+    </form>
+</div>
+
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxxNUtYrh2BZrxW9DJXQzzU_qjXlh7Nt1qk3yW_03ErpraPL--KqD44uJMIteXwx02G/exec";
+
+    window.addEventListener('DOMContentLoaded', () => {
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'getTeams' })
+        })
+        .then(res => res.json())
+        .then(teams => {
+            const select = document.getElementById('teamSelect');
+            select.innerHTML = '<option value="" disabled selected>Choose a registered project...</option>';
+            teams.forEach(t => {
+                let opt = document.createElement('option');
+                opt.value = t.teamName;
+                opt.textContent = `${t.teamName} — (${t.projectName})`;
+                select.appendChild(opt);
+            });
+        }).catch(err => console.error("Error fetching project options"));
+    });
+
+    document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loaderText');
+        
+        btn.disabled = true;
+        loader.style.display = 'block';
+
+        const payload = {
+            action: 'submitRating',
+            judgeName: document.getElementById('judgeName').value,
+            teamName: document.getElementById('teamSelect').value,
+            q1: document.querySelector('input[name="q1"]:checked').value,
+            q2: document.querySelector('input[name="q2"]:checked').value,
+            q3: document.querySelector('input[name="q3"]:checked').value,
+            q4: document.querySelector('input[name="q4"]:checked').value,
+            q5: document.querySelector('input[name="q5"]:checked').value
+        };
+
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'success') {
+                alert('Feedback submitted successfully!');
+                document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+                document.getElementById('teamSelect').value = "";
+            } else {
+                alert('Submission failed: ' + response.message);
+            }
+        })
+        .catch(err => alert('Network error occurred.'))
+        .finally(() => {
+            btn.disabled = false;
+            loader.style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>
