@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback Intelligence</title>
+    <style>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #080808; color: #fff; }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #0d0d0d; }
+      ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+      @keyframes spin    { to { transform: rotate(360deg); } }
+      @keyframes pulse   { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+      @keyframes fadeIn  { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+      @keyframes barFill { from { width: 0; } }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
